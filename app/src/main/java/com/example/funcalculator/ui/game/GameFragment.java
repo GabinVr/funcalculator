@@ -1,27 +1,26 @@
-package com.example.funcalculator.ui.gallery;
+package com.example.funcalculator.ui.game;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.funcalculator.databinding.FragmentGalleryBinding;
+import com.example.funcalculator.databinding.FragmentGameBinding;
 
-public class GalleryFragment extends Fragment {
+public class GameFragment extends Fragment {
 
-    private FragmentGalleryBinding binding;
+    private FragmentGameBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        GalleryViewModel galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+        GameViewModel gameViewModel =
+                new ViewModelProvider(this).get(GameViewModel.class);
 
-        binding = FragmentGalleryBinding.inflate(inflater, container, false);
+        binding = FragmentGameBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         return root;

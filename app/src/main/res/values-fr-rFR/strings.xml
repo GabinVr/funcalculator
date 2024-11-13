@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FunCalculator</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="action_settings">reglage</string>
+    <string name="menu_home">accueil</string>
+    <string name="menu_game">Jeu</string>
+    <string name="menu_calculator">Calculatrice</string>
+</resources>
