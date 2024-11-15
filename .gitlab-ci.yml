@@ -41,12 +41,13 @@ debugTests:
   stage: test
   image: thyrlian/android-sdk:latest
   script:
+    - sdkmanager "platforms;android-34" "build-tools;34.0.0" "extras;android;m2repository" "extras;google;m2repository"
     - ./gradlew -Pci --console=plain :app:testDebug
   artifacts:
     paths:
-      - FunCalculator/app/build/test-results/**/TEST-*.xml
+      - ./app/build/test-results/**/TEST-*.xml
     reports:
-      junit: FunCalculator/app/build/test-results/**/TEST-*.xml
+      junit: ./app/build/test-results/**/TEST-*.xml
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
