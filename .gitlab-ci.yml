@@ -44,9 +44,9 @@ debugTests:
     - ./gradlew -Pci --console=plain :app:testDebug
   artifacts:
     paths:
-      - funcalculator/app/build/test-results/**/TEST-*.xml
+      - FunCalculator/app/build/test-results/**/TEST-*.xml
     reports:
-      junit: funcalculator/app/build/test-results/**/TEST-*.xml
+      junit: FunCalculator/app/build/test-results/**/TEST-*.xml
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
