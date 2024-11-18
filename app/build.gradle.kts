@@ -58,6 +58,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    testImplementation("org.mockito:mockito-core:5.5.0")
+
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
@@ -73,10 +75,10 @@ tasks.register<JacocoReport>("jacocoTestReport") {
     val mainSrc = "${project.projectDir}/src/main/kotlin"
 
     sourceDirectories.setFrom(files(mainSrc))
-    classDirectories.setFrom(fileTree("${buildDir}/intermediates/javac/debug") {
+    classDirectories.setFrom(fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
         exclude(fileFilter)
     })
-    executionData.setFrom(fileTree(buildDir) {
+    executionData.setFrom(fileTree(layout.buildDirectory) {
         include("jacoco/testDebugUnitTest.exec")
     })
 }
