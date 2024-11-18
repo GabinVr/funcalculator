@@ -55,11 +55,12 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.retrofit)
+    implementation(libs.logging.interceptor)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    testImplementation("org.mockito:mockito-core:5.5.0")
-
+    testImplementation(libs.mockito.core)
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
