@@ -1,6 +1,6 @@
 package com.example.funcalculator.model.game;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class LiteralState {
@@ -11,7 +11,7 @@ public class LiteralState {
     }
 
     public Map<Character, Integer> initMap(){
-        Map<Character, Integer> map = Collections.emptyMap();
+        Map<Character, Integer> map = new HashMap<>();
 
         for (int i = 0; i < 10; i++){
             map.put((char) i, 0);
@@ -28,6 +28,10 @@ public class LiteralState {
 
     public void modifyStateOf(Character literal, int state){
         _stateMap.put(literal, state);
+    }
+
+    public Map<Character, Integer> getStates(){
+        return _stateMap;
     }
 
 }
