@@ -1,5 +1,6 @@
 package com.example.funcalculator.ui.main;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -12,7 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.pm.ActivityInfo;
 import com.example.funcalculator.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,5 +54,20 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    /**
+     * Locks the Activity's orientation to portrait.
+     */
+    @SuppressLint("SourceLockedOrientationActivity")
+    public void lockOrientationPortrait() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    /**
+     * Unlocks the Activity's orientation to allow both portrait and landscape.
+     */
+    public void unlockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 }

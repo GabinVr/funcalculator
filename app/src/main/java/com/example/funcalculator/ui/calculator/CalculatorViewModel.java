@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.funcalculator.model.calculator.CalculatorModel;
 import com.example.funcalculator.model.expression.Expression;
 
 public class CalculatorViewModel extends ViewModel {
     private final Expression _expression;
+    private CalculatorModel _model = new CalculatorModel();
     private final MutableLiveData<String> _screen = new MutableLiveData<>();
     public CalculatorViewModel() {
         _expression = new Expression("42");
@@ -18,9 +20,16 @@ public class CalculatorViewModel extends ViewModel {
     }
 
     public void onEqualButtonClicked() {
-        // Implementation of the calculation
+
         Log.d("CalculatorViewModel", "onEqualButtonClicked");
-         _screen.postValue("0");
+        try {
+            String result = CalculatorModel.evaluate(_expression);
+            _screen.postValue(result);
+        }
+        catch (Exception e) {
+            _screen.postValue("Error");
+        }
+        _screen.postValue("0");
          _expression.clear();
     }
  

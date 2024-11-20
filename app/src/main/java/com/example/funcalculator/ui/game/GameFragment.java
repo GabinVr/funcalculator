@@ -1,5 +1,7 @@
 package com.example.funcalculator.ui.game;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,18 +16,19 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.funcalculator.R;
 import com.example.funcalculator.databinding.FragmentGameBinding;
-import com.example.funcalculator.model.game.LiteralState;
 
 import java.lang.reflect.Field;
 import java.nio.channels.ScatteringByteChannel;
 import java.util.Arrays;
 import java.util.LinkedList;
+import com.example.funcalculator.ui.main.MainActivity;
 
 public class GameFragment extends Fragment {
 
     private FragmentGameBinding binding;
     private GameViewModel gameViewModel;
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
@@ -76,8 +79,8 @@ public class GameFragment extends Fragment {
 
         int indice = gameViewModel.getTryCount();
         LinkedList<Integer>[] states = gameViewModel.getStates();
-
         int stateId = 0;
+        
         for (LinkedList<Integer> state : states){
             if (state != null){
                 colorState(state, stateId);
@@ -85,7 +88,9 @@ public class GameFragment extends Fragment {
             stateId++;
         }
 
-
+        if (gameViewModel.gameFinished()){
+            return;
+        }
 
         Log.d("Game Fragment", "updateUi win "+ gameViewModel.winGame());
         switch (gameViewModel.winGame()){ 
@@ -94,10 +99,18 @@ public class GameFragment extends Fragment {
                 return;
             case 1:
                 Toast.makeText(getContext(), "You won", Toast.LENGTH_SHORT).show();
-                return;
+                break;
             default:
                 break;
         }
+
+
+
+
+
+
+
+
 
         Log.d("Game Fragment", "updateUi states: "+ Arrays.toString(states));
         Log.d("Game Fragment", "updateUi count "+ gameViewModel.getTryCount());
@@ -256,6 +269,22 @@ public class GameFragment extends Fragment {
                 updateUI();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).lockOrientationPortrait();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).unlockOrientation();
+        }
     }
 
     @Override

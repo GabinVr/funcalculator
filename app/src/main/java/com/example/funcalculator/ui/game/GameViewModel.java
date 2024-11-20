@@ -26,25 +26,30 @@ public class GameViewModel extends ViewModel {
     public int winGame(){
         if (tryCount > 4){
             _game_state = 1;
-
         }
-        for (LinkedList<Integer> state : _states){
-            if (state == null){
-                return 0;
-            }
-            Log.d("GameViewModel", "state: " + state);
-            for (Integer color : state){
-                Log.d("GameViewModel", "color: " + color);
-                if (color != 1){
-                    return 0;
+
+        for (LinkedList<Integer> state: _states){
+            if (state != null){
+                boolean is_valid = true;
+                for (Integer color : state){
+                    Log.d("GameViewModel", "color: " + color);
+                    if (color != 1){
+                        is_valid = false;
+                        break;
+                    }
+                }
+                if (is_valid){
+                    _game_state = 1;
+                    return 1;
                 }
             }
-            _game_state = 1;
-            return 1;
+            else{
+                return 0;
+            }
         }
-        return 1;
-
+        return -1;
     }
+
 
     public Character[] getExpression(){
         return _gameModel.getExpression();
