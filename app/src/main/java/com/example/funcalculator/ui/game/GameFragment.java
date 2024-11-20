@@ -85,9 +85,7 @@ public class GameFragment extends Fragment {
             stateId++;
         }
 
-        if (gameViewModel.gameFinished()){
-            return;
-        }
+
 
         Log.d("Game Fragment", "updateUi win "+ gameViewModel.winGame());
         switch (gameViewModel.winGame()){ 

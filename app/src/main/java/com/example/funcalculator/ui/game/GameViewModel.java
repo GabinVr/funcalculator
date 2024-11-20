@@ -26,7 +26,7 @@ public class GameViewModel extends ViewModel {
     public int winGame(){
         if (tryCount > 4){
             _game_state = 1;
-            return -1;
+
         }
         for (LinkedList<Integer> state : _states){
             if (state == null){

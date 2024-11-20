@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".ui.calculator.CalculatorFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.funcalculator.ui.calculator.CalculatorViewModel" />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
 
     <Button
         android:id="@+id/buttonDivide"
@@ -19,7 +28,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onOperatorButtonClicked("/")}'
+        />
 
     <Button
         android:id="@+id/button5"
@@ -34,7 +45,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline22"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("5")}'
+        />
 
     <Button
         android:id="@+id/buttonSubtract"
@@ -49,7 +62,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline22"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onOperatorButtonClicked("-")}'
+        />
 
     <Button
         android:id="@+id/buttonMultiply"
@@ -64,7 +79,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onOperatorButtonClicked("*")}'
+        />
 
     <Button
         android:id="@+id/buttonAdd"
@@ -79,7 +96,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="@+id/guideline19"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onOperatorButtonClicked("+")}'
+        />
 
     <Button
         android:id="@+id/buttonEqual"
@@ -95,7 +114,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toBottomOf="@+id/buttonAdd"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onEqualButtonClicked()}'
+        />
 
     <Button
         android:id="@+id/button8"
@@ -110,7 +131,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("8")}'
+         />
 
     <Button
         android:id="@+id/buttonPercent"
@@ -125,7 +148,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onPercentButtonClicked()}'
+        />
 
     <Button
         android:id="@+id/buttonClear"
@@ -140,7 +165,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onClearButtonClicked()}'
+         />
 
     <Button
         android:id="@+id/button2"
@@ -153,7 +180,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline19"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("2")}'
+        />
 
     <Button
         android:id="@+id/button4"
@@ -168,7 +197,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline22"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("4")}'
+        />
 
     <Button
         android:id="@+id/button6"
@@ -183,7 +214,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline22"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("6")}'
+         />
 
     <Button
         android:id="@+id/button1"
@@ -196,7 +229,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline19"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("1")}'
+         />
 
     <Button
         android:id="@+id/buttonChangeSign"
@@ -211,7 +246,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onChangeSignButtonClicked()}'
+         />
 
     <Button
         android:id="@+id/buttonDot"
@@ -226,7 +263,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline21"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick="@{() -> viewModel.onDotButtonClicked()}"
+        />
 
     <Button
         android:id="@+id/button3"
@@ -240,7 +279,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline19"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20"
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("3")}'
+         />
 
     <Button
         android:id="@+id/button0"
@@ -255,7 +296,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline21"
-        app:layout_constraintWidth_percent="0.43" />
+        app:layout_constraintWidth_percent="0.43"
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("0")}'
+         />
 
     <Button
         android:id="@+id/button7"
@@ -270,7 +313,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("7")}'
+        />
 
     <Button
         android:id="@+id/button9"
@@ -285,7 +330,9 @@
         app:layout_constraintHeight_percent="0.125"
         app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintWidth_percent="0.20" />
+        app:layout_constraintWidth_percent="0.20" 
+        android:onClick='@{() -> viewModel.onNumberButtonClicked("9")}'
+        />
 
     <TextView
         android:id="@+id/screen"
@@ -303,7 +350,8 @@
         app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
-        app:layout_constraintWidth_percent="0.9" />
+        app:layout_constraintWidth_percent="0.9"
+         />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -446,3 +494,5 @@
         app:layout_constraintGuide_percent="0.84" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
