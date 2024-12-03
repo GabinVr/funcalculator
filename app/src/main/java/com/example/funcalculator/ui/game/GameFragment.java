@@ -20,6 +20,7 @@ import com.example.funcalculator.databinding.FragmentGameBinding;
 import com.example.funcalculator.model.pair.Pair;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +31,7 @@ public class GameFragment extends Fragment {
 
     private FragmentGameBinding binding;
     private GameViewModel gameViewModel;
+    private List<EditText> editTextList;
 
     public GameFragment(){
         // Required empty public constructor
@@ -44,6 +46,16 @@ public class GameFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game, container, false);
         binding.setViewModel(gameViewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        editTextList = new ArrayList<>();
+        for (int i = 0; i <= 20; i++) {
+            String editTextId = "editText" + i;
+            int resId = getResources().getIdentifier(editTextId, "id", getActivity().getPackageName());
+            EditText editText = binding.getRoot().findViewById(resId);
+            if (editText != null) {
+                editTextList.add(editText);
+            }
+        }
 
         gameViewModel.getStatesLiveData().observe(getViewLifecycleOwner(), states -> {
             Log.d("Game Fragment", "states: "+ states);
@@ -116,14 +128,29 @@ public class GameFragment extends Fragment {
         }
     }
 
-    public void updateMatrixUI(List<List<Pair>> states){
+    public void updateMatrixUI(List<List<Pair>> states) {
         for (int i = 0; i < states.size(); i++) {
             List<Pair> row = states.get(i);
             for (int j = 0; j < row.size(); j++) {
                 Pair pair = row.get(j);
-                String editTextName = "editText" + (i*5) + j + 1;
-                changeColorState(editTextName, pair.getColor());
-                modifyEditTextContent(editTextName, pair.getContent().toString());
+                int editTextIndex = (i * 5) + j; 
+                if (editTextIndex < editTextList.size()) {
+                    EditText editText = editTextList.get(editTextIndex);
+                    editText.setText(pair.getContent().toString());
+                    switch (pair.getColor()) {
+                        case -1:
+                            editText.setBackgroundColor(getResources().getColor(R.color.grey));
+                            break;
+                        case 1:
+                            editText.setBackgroundColor(getResources().getColor(R.color.light_green));
+                            break;
+                        case 2:
+                            editText.setBackgroundColor(getResources().getColor(R.color.orange));
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
         }
     }
