@@ -1,63 +1,42 @@
 package com.example.funcalculator.ui.game;
 
 import java.util.LinkedList;
+import java.util.List;
 
-import com.example.funcalculator.model.game.GameModel;
+import com.example.funcalculator.model.game.GameModel_;
+import com.example.funcalculator.model.pair.Pair;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.funcalculator.model.expression.Expression;
 
 import android.util.Log;
 
 public class GameViewModel extends ViewModel {
-    private int tryCount = 1;
-    private GameModel _gameModel;
-    private LinkedList[] _states;
-    private int _game_state = 0;
+    private GameModel_ _gameModel;
+    private MutableLiveData<List<List<Pair>>> _statesLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> _gameStatusLiveData = new MutableLiveData<>();
+
+    public LiveData<List<List<Pair>>> getStatesLiveData() {
+        return _statesLiveData;
+    }
+    
+    public void updateStatesLiveData() {
+        _statesLiveData.postValue(_gameModel.getStates());
+    }
+
+    public LiveData<Integer> getGameStatusLiveData() {
+        return _gameStatusLiveData;
+    }
+
+    public void updateGameStatusLiveData() {
+        _gameStatusLiveData.postValue(_gameModel.getGameStatus());
+    }
 
     public GameViewModel() {
-        _gameModel = new GameModel(5, "2+2=4");
-        _states = new LinkedList[4];
-    }
-
-    public boolean gameFinished(){
-        return _game_state == 1;
-    }
-
-    public int winGame(){
-        if (tryCount > 4){
-            _game_state = 1;
-        }
-
-        for (LinkedList<Integer> state: _states){
-            if (state != null){
-                boolean is_valid = true;
-                for (Integer color : state){
-                    Log.d("GameViewModel", "color: " + color);
-                    if (color != 1){
-                        is_valid = false;
-                        break;
-                    }
-                }
-                if (is_valid){
-                    _game_state = 1;
-                    return 1;
-                }
-            }
-            else{
-                return 0;
-            }
-        }
-        return -1;
-    }
-
-
-    public Character[] getExpression(){
-        return _gameModel.getExpression();
-    }
-
-    @SuppressWarnings("unchecked")
-    public LinkedList<Integer>[] getStates(){
-        return _states;
+        _gameModel = new GameModel_("2+2=4");
     }
 
     public void numberButtonHandler(int buttonId){
@@ -65,57 +44,66 @@ public class GameViewModel extends ViewModel {
         try{
             switch (buttonId){
                 case 0:
-                    _gameModel.addLiteral('0');
+                    _gameModel.add('0');
                     break;
                 case 1:
-                    _gameModel.addLiteral('1');
+                    _gameModel.add('1');
                     break;
                 case 2:
-                    _gameModel.addLiteral('2');
+                    _gameModel.add('2');
                     break;
                 case 3:
-                    _gameModel.addLiteral('3');
+                    _gameModel.add('3');
                     break;
                 case 4:
-                    _gameModel.addLiteral('4');
+                    _gameModel.add('4');
                     break;
                 case 5:
-                    _gameModel.addLiteral('5');
+                    _gameModel.add('5');
                     break;
                 case 6:
-                    _gameModel.addLiteral('6');
+                    _gameModel.add('6');
                     break;
                 case 7:
-                    _gameModel.addLiteral('7');
+                    _gameModel.add('7');
                     break;
                 case 8:
-                    _gameModel.addLiteral('8');
+                    _gameModel.add('8');
                     break;
                 case 9:
-                    _gameModel.addLiteral('9');
+                    _gameModel.add('9');
                     break;
-        }
+                default:
+                    break;
+            }
+        updateStatesLiveData();
+        updateGameStatusLiveData();
         }catch(Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void operationButtonHandler(Character operator){
         try{
-            _gameModel.addLiteral(operator);
+            _gameModel.add(operator);
+            updateStatesLiveData();
+            updateGameStatusLiveData();
         }catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    public void operationButtonHandler(String operator){
+        if (operator.length() == 1){
+            operationButtonHandler(operator.charAt(0));
         }
     }
 
     public void validateButtonHandler(){
         try{
-            LinkedList<Integer> state = _gameModel.validate();
-            _states[tryCount-1] = state;
-            tryCount += 1;
-            _gameModel = new GameModel(5, "2+2=4");
-
+            _gameModel.validate();
+            updateStatesLiveData();
+            updateGameStatusLiveData();
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -123,13 +111,11 @@ public class GameViewModel extends ViewModel {
 
     public void deleteButtonHandler(){
         try{
-            _gameModel.removeOperation();
+            _gameModel.remove();
+            updateStatesLiveData();
+            updateGameStatusLiveData();
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    public int getTryCount(){
-        return tryCount;
     }
 }

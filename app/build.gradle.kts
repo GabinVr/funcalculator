@@ -49,12 +49,15 @@ android {
 
 dependencies {
     implementation(libs.room.runtime)
+    implementation(libs.volley)
+    testImplementation(libs.androidx.core)
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
     annotationProcessor(libs.room.compiler)
     // optional - Test helpers
     testImplementation(libs.androidx.room.testing)
-
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockwebserver)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

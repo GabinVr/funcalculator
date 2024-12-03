@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.game.GameFragment">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.funcalculator.ui.game.GameViewModel"
+        />
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -468,7 +479,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
         app:layout_constraintTop_toTopOf="@+id/guideline26" />
 
-        <!-- Number Buttons 0-9 -->
     <Button
         android:id="@+id/button_0"
         android:layout_width="0dp"
@@ -476,12 +486,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="0"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_16"
-        app:layout_constraintTop_toTopOf="@+id/guideline42" />
+        app:layout_constraintTop_toTopOf="@+id/guideline42" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(0)}'
+        />
 
     <Button
         android:id="@+id/button_1"
@@ -490,12 +501,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="1"
         app:layout_constraintBottom_toTopOf="@+id/guideline42"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_16"
         app:layout_constraintStart_toStartOf="@+id/guideline29"
-        app:layout_constraintTop_toTopOf="@+id/guideline41" />
+        app:layout_constraintTop_toTopOf="@+id/guideline41" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(1)}'
+        />
 
     <Button
         android:id="@+id/button_2"
@@ -504,12 +516,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="2"
         app:layout_constraintBottom_toTopOf="@+id/guideline42"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_16"
-        app:layout_constraintTop_toTopOf="@+id/guideline41" />
+        app:layout_constraintTop_toTopOf="@+id/guideline41" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(2)}'
+        />
 
     <Button
         android:id="@+id/button_3"
@@ -518,12 +531,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="3"
         app:layout_constraintBottom_toTopOf="@+id/guideline42"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_50"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_33"
-        app:layout_constraintTop_toTopOf="@+id/guideline41" />
+        app:layout_constraintTop_toTopOf="@+id/guideline41" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(3)}'
+        />
 
     <Button
         android:id="@+id/button_4"
@@ -532,12 +546,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="4"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_16"
         app:layout_constraintStart_toStartOf="@+id/guideline29"
-        app:layout_constraintTop_toTopOf="@+id/guideline40" />
+        app:layout_constraintTop_toTopOf="@+id/guideline40" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(4)}'
+        />
 
     <Button
         android:id="@+id/button_5"
@@ -546,12 +561,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="5"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_16"
-        app:layout_constraintTop_toTopOf="@+id/guideline40" />
+        app:layout_constraintTop_toTopOf="@+id/guideline40" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(5)}'
+        />
 
     <Button
         android:id="@+id/button_6"
@@ -560,12 +576,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="6"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_50"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_33"
-        app:layout_constraintTop_toTopOf="@+id/guideline40" />
+        app:layout_constraintTop_toTopOf="@+id/guideline40" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(6)}'
+        />
 
     <Button
         android:id="@+id/button_7"
@@ -574,12 +591,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="7"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_16"
         app:layout_constraintStart_toStartOf="@+id/guideline29"
-        app:layout_constraintTop_toTopOf="@+id/guideline30" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(7)}'
+        />
 
     <Button
         android:id="@+id/button_8"
@@ -588,12 +606,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="8"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_16"
-        app:layout_constraintTop_toTopOf="@+id/guideline30" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(8)}'
+        />
 
     <Button
         android:id="@+id/button_9"
@@ -602,12 +621,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="9"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_50"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_33"
-        app:layout_constraintTop_toTopOf="@+id/guideline30" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" 
+        android:onClick='@{() -> viewModel.numberButtonHandler(9)}'
+        />
 
         <!-- Operator Buttons -->
     <Button
@@ -617,12 +637,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="+"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_83"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_66"
-        app:layout_constraintTop_toTopOf="@+id/guideline30" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" 
+        android:onClick='@{() -> viewModel.operationButtonHandler("+")}'
+        />
 
     <Button
         android:id="@+id/button_minus"
@@ -631,12 +652,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="-"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_66"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/guideline30" />
+        app:layout_constraintTop_toTopOf="@+id/guideline30" 
+        android:onClick='@{() -> viewModel.operationButtonHandler("-")}'
+        />
 
     <Button
         android:id="@+id/button_multiply"
@@ -645,12 +667,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="*"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_66"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/guideline40" />
+        app:layout_constraintTop_toTopOf="@+id/guideline40" 
+        android:onClick='@{() -> viewModel.operationButtonHandler("*")}'
+        />
 
     <Button
         android:id="@+id/button_divide"
@@ -659,12 +682,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="/"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_83"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_66"
-        app:layout_constraintTop_toTopOf="@+id/guideline40" />
+        app:layout_constraintTop_toTopOf="@+id/guideline40" 
+        android:onClick='@{() -> viewModel.operationButtonHandler("/")}'
+        />
 
     <Button
         android:id="@+id/button_equals"
@@ -673,12 +697,13 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="="
         app:layout_constraintBottom_toTopOf="@+id/guideline42"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_66"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/guideline41" />
+        app:layout_constraintTop_toTopOf="@+id/guideline41" 
+        android:onClick='@{() -> viewModel.operationButtonHandler("=")}'
+        />
 
 
     <Button
@@ -688,13 +713,14 @@
         android:autoSizeMaxTextSize="24sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
-        android:onClick="onButtonClick"
         android:text="."
         app:layout_constraintBottom_toTopOf="@+id/guideline42"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_83"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_66"
         app:layout_constraintTop_toTopOf="@+id/guideline41"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0" 
+        android:onClick='@{() -> viewModel.operationButtonHandler(".")}'
+        />
 
     <Button
         android:id="@+id/button_Delete"
@@ -704,7 +730,9 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_33"
         app:layout_constraintStart_toStartOf="@+id/guideline29"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" 
+        android:onClick='@{() -> viewModel.deleteButtonHandler()}'
+        />
 
     <Button
         android:id="@+id/button_Validate"
@@ -714,7 +742,9 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_83"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_50"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline" 
+        android:onClick='@{() -> viewModel.validateButtonHandler()}'
+        />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -837,3 +867,5 @@
         app:layout_constraintGuide_percent="0.61" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

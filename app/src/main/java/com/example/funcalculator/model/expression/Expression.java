@@ -34,4 +34,8 @@ public class Expression {
     public String toJson(){
         return "{\"expression\":\"" + _value + "\"}";
     }
+
+    public void setExpression(String response) {
+        _value = response;
+    }
 }

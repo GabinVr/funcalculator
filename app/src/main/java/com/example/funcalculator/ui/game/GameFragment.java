@@ -1,7 +1,6 @@
 package com.example.funcalculator.ui.game;
 
 import android.annotation.SuppressLint;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,16 +10,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.funcalculator.R;
 import com.example.funcalculator.databinding.FragmentGameBinding;
 
+import com.example.funcalculator.model.pair.Pair;
+
 import java.lang.reflect.Field;
-import java.nio.channels.ScatteringByteChannel;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+
 import com.example.funcalculator.ui.main.MainActivity;
 
 public class GameFragment extends Fragment {
@@ -28,72 +31,66 @@ public class GameFragment extends Fragment {
     private FragmentGameBinding binding;
     private GameViewModel gameViewModel;
 
+    public GameFragment(){
+        // Required empty public constructor
+    }
+
     @SuppressLint("SourceLockedOrientationActivity")
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
+        GameViewModel gameViewModel = new ViewModelProvider(this).get(GameViewModel.class);
 
-        binding = FragmentGameBinding.inflate(inflater, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game, container, false);
+        binding.setViewModel(gameViewModel);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
-        setNumberButtons();
-        setOperationButtons();
-        setControlButtons();
+        gameViewModel.getStatesLiveData().observe(getViewLifecycleOwner(), states -> {
+            Log.d("Game Fragment", "states: "+ states);
+            updateMatrixUI(states);
+        });
 
-        View root = binding.getRoot();
+        gameViewModel.getGameStatusLiveData().observe(getViewLifecycleOwner(), gameStatus -> {
+            Log.d("Game Fragment", "gameStatus: "+ gameStatus);
+            if (gameStatus != 0) {
+                gameStatusToast(gameStatus);
+            }
+        });
 
-        return root;
+
+        View view = binding.getRoot();
+
+        return view;
     }
 
-    private void colorState(LinkedList<Integer> state, int stateId){
-        int colorId = 1;
-        for (Integer color : state){
-            String textId = "editText" + ((stateId*5) + colorId);
-            try {
-                Field field = binding.getClass().getDeclaredField(textId);
-                field.setAccessible(true);
-                EditText editText = (EditText) field.get(binding);
-                if (editText != null){
-                    switch (color) {
-                        case 0:
-                            editText.setBackgroundColor(getResources().getColor(R.color.grey));
-                            break;
-                        case 1:
-                            editText.setBackgroundColor(getResources().getColor(R.color.light_green));
-                            break;
-                        case 2:
-                            editText.setBackgroundColor(getResources().getColor(R.color.orange));
-                            break;
-                        default:
-                            break;
-                    }
+    public void changeColorState(String textId, int color){
+        try{
+            Field field = binding.getClass().getDeclaredField(textId);
+            field.setAccessible(true);
+            EditText editText = (EditText) field.get(binding);
+            if (editText != null) {
+                switch (color) {
+                    case -1:
+                        editText.setBackgroundColor(getResources().getColor(R.color.grey));
+                        break;
+                    case 1:
+                        editText.setBackgroundColor(getResources().getColor(R.color.light_green));
+                        break;
+                    case 2:
+                        editText.setBackgroundColor(getResources().getColor(R.color.orange));
+                        break;
+                    default:
+                        break;
                 }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
             }
-            colorId++;
+        }
+        catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
-
-    private void updateUI(){
-
-        int indice = gameViewModel.getTryCount();
-        LinkedList<Integer>[] states = gameViewModel.getStates();
-        int stateId = 0;
-        
-        for (LinkedList<Integer> state : states){
-            if (state != null){
-                colorState(state, stateId);
-            }
-            stateId++;
-        }
-
-        if (gameViewModel.gameFinished()){
-            return;
-        }
-
-        Log.d("Game Fragment", "updateUi win "+ gameViewModel.winGame());
-        switch (gameViewModel.winGame()){ 
+    public void gameStatusToast(int gameStatus){
+        switch (gameStatus){
             case -1:
                 Toast.makeText(getContext(), "You lost", Toast.LENGTH_SHORT).show();
                 return;
@@ -103,172 +100,32 @@ public class GameFragment extends Fragment {
             default:
                 break;
         }
+    }
 
 
-
-
-
-
-
-
-
-        Log.d("Game Fragment", "updateUi states: "+ Arrays.toString(states));
-        Log.d("Game Fragment", "updateUi count "+ gameViewModel.getTryCount());
-
-
-        Character[] expression = gameViewModel.getExpression();
-        Log.d("Game Fragment", "updateUi with"+ Arrays.toString(expression));
-
-        for (int i = 0; i < expression.length; i++){
-            try {
-                String editTextName = "editText" + (((indice-1)*5) + i+1);
-                Field field = binding.getClass().getDeclaredField(editTextName);
-                field.setAccessible(true);
-                EditText editText = (EditText) field.get(binding);
-                if (editText != null) {
-                    editText.setText(expression[i].toString());
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
+    public void modifyEditTextContent(String editTextName, String content){
+        try{
+            Field field = binding.getClass().getDeclaredField(editTextName);
+            field.setAccessible(true);
+            EditText editText = (EditText) field.get(binding);
+            if (editText != null) {
+                editText.setText(content);
             }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
-    private void setNumberButtons(){
-        binding.button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.numberButtonHandler(0);
-                updateUI();
+    public void updateMatrixUI(List<List<Pair>> states){
+        for (int i = 0; i < states.size(); i++) {
+            List<Pair> row = states.get(i);
+            for (int j = 0; j < row.size(); j++) {
+                Pair pair = row.get(j);
+                String editTextName = "editText" + (i*5) + j + 1;
+                changeColorState(editTextName, pair.getColor());
+                modifyEditTextContent(editTextName, pair.getContent().toString());
             }
-        });
-        binding.button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(1);
-                updateUI();
         }
-        });
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(2);
-                updateUI();
-        }
-        });
-        binding.button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(3);
-                updateUI();
-        }
-        });
-        binding.button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(4);
-                updateUI();
-        }
-        });
-        binding.button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(5);
-                updateUI();
-        }
-        });
-        binding.button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(6);
-                updateUI();
-        }
-        });
-        binding.button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(7);
-                updateUI();
-        }
-        });
-        binding.button8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(8);
-                updateUI();
-        }
-        });
-        binding.button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            gameViewModel.numberButtonHandler(9);
-                updateUI();
-        }
-        });
-    }
-
-    private void setOperationButtons(){
-        binding.buttonPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('+');
-                updateUI();
-            }
-        });
-        binding.buttonMinus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('-');
-                updateUI();
-            }
-        });
-        binding.buttonMultiply.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('*');
-                updateUI();
-            }
-        });
-        binding.buttonDivide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('/');
-                updateUI();
-            }
-        });
-        binding.buttonEquals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('=');
-                updateUI();
-            }
-        });
-        binding.buttonDot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.operationButtonHandler('.');
-                updateUI();
-            }
-        });
-    }
-
-    private void setControlButtons(){
-        binding.buttonValidate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.validateButtonHandler();
-                if (!gameViewModel.gameFinished()){
-                    updateUI();
-                }
-            }
-        });
-        binding.buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameViewModel.deleteButtonHandler();
-                updateUI();
-            }
-        });
     }
 
     @Override
