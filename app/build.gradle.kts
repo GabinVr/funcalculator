@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.funcalculator"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.volley)
     testImplementation(libs.androidx.core)
+    testImplementation(libs.ext.junit)
     // If this project only uses Java source, use the Java annotationProcessor
     // No additional plugins are necessary
     annotationProcessor(libs.room.compiler)
@@ -71,6 +72,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     testImplementation(libs.mockito.core)
+    // Js engine
+    implementation(libs.rhino.android)
+    implementation(libs.androidx.javascriptengine)
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {

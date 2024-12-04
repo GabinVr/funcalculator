@@ -1,21 +1,18 @@
 package com.example.funcalculator.ui.game;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import com.example.funcalculator.model.game.GameModel_;
+import com.example.funcalculator.model.game.GameModel;
 import com.example.funcalculator.model.pair.Pair;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.funcalculator.model.expression.Expression;
-
 import android.util.Log;
 
 public class GameViewModel extends ViewModel {
-    private GameModel_ _gameModel;
+    private GameModel _gameModel;
     private MutableLiveData<List<List<Pair>>> _statesLiveData = new MutableLiveData<>();
     private MutableLiveData<Integer> _gameStatusLiveData = new MutableLiveData<>();
 
@@ -36,7 +33,7 @@ public class GameViewModel extends ViewModel {
     }
 
     public GameViewModel() {
-        _gameModel = new GameModel_("2+2=4");
+        _gameModel = new GameModel("2+2=4");
     }
 
     public void numberButtonHandler(int buttonId){

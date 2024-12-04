@@ -1,5 +1,6 @@
 [versions]
 agp = "8.6.0"
+javascriptengine = "1.0.0-beta01"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -14,12 +15,14 @@ navigationFragment = "2.6.0"
 navigationUi = "2.6.0"
 powermockCore = "2.0.9"
 retrofit = "2.11.0"
+rhinoAndroid = "1.0"
 robolectric = "4.14.1"
 roomRuntime = "2.6.1"
 volley = "1.2.1"
 core = "1.6.1"
 
 [libraries]
+androidx-javascriptengine = { module = "androidx.javascriptengine:javascriptengine", version.ref = "javascriptengine" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomRuntime" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -36,6 +39,7 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 powermock-core = { module = "org.powermock:powermock-core", version.ref = "powermockCore" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+rhino-android = { module = "io.apisense:rhino-android", version.ref = "rhinoAndroid" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
