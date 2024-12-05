@@ -5,26 +5,72 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import android.content.Context;
+import android.app.Application;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.funcalculator.model.calculator.CalculatorModel;
 import com.example.funcalculator.model.expression.Expression;
+import com.example.funcalculator.data.remote.apis.evaluator.VolleyClient;
+import com.example.funcalculator.data.repository.CalculatorRepository;
 
 public class CalculatorViewModel extends ViewModel {
     private final Expression _expression;
     private CalculatorModel _model = new CalculatorModel();
     private final MutableLiveData<String> _screen = new MutableLiveData<>();
+    private CalculatorRepository _repository;
+    private VolleyClient _volleyClient; 
+
     public CalculatorViewModel() {
         _expression = new Expression("42");
         _screen.setValue(_expression.getValue());
         Log.d("CalculatorViewModel", "CalculatorViewModel created");
     }
 
-    public void onEqualButtonClicked() {
 
+    public void setVolleyClient(VolleyClient volleyClient) {
+        _volleyClient = volleyClient;
+        if (_volleyClient == null) {
+            throw new IllegalArgumentException("VolleyClient cannot be null");
+        }
+        _repository = new CalculatorRepository(_volleyClient);
+    }
+
+    public void onEqualButtonClicked() {
+    
         Log.d("CalculatorViewModel", "onEqualButtonClicked");
         try {
-            String result = CalculatorModel.evaluate(_expression);
-            _screen.postValue(result);
+            _repository.evaluateExpression(_expression,
+            response -> {
+                String value = null;
+                try {
+                    value = response.getString("result");
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.d("CalculatorViewModel", "Response received: " + value);
+                _screen.postValue(value);
+            }
+            , error -> {
+                Log.e("CalculatorViewModel", "Error while evaluating expression", error);
+                if (error.networkResponse != null) {
+                    int statusCode = error.networkResponse.statusCode;
+                        if (statusCode == 404) {
+                            Log.e("API_ERROR", "Endpoint not found (404)");
+                        } else {
+                            Log.e("API_ERROR", "HTTP error code: " + statusCode);
+                        }
+                } else {
+                    Log.e("API_ERROR", "Network error: " + error.getMessage());
+                }
+            });
         }
         catch (Exception e) {
             _screen.postValue("Error");

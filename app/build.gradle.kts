@@ -1,3 +1,5 @@
+import javax.xml.parsers.DocumentBuilderFactory
+
 plugins {
     alias(libs.plugins.android.application)
     id("jacoco")
@@ -15,6 +17,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -32,9 +35,15 @@ android {
     }
 
     testOptions {
-        unitTests.isIncludeAndroidResources = true
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-        animationsDisabled = true
+        unitTests{
+            isIncludeAndroidResources = true
+            all {
+                it.extensions.configure<JacocoTaskExtension> {
+                    isIncludeNoLocationClasses = true
+                    excludes = listOf("jdk.internal.*")
+                }
+            }
+        }
     }
 
     compileOptions {
@@ -52,11 +61,11 @@ dependencies {
     implementation(libs.volley)
     testImplementation(libs.androidx.core)
     testImplementation(libs.ext.junit)
-    // If this project only uses Java source, use the Java annotationProcessor
-    // No additional plugins are necessary
-    annotationProcessor(libs.room.compiler)
-    // optional - Test helpers
-    testImplementation(libs.androidx.room.testing)
+//    // If this project only uses Java source, use the Java annotationProcessor
+//    // No additional plugins are necessary
+//    annotationProcessor(libs.room.compiler)
+//    // optional - Test helpers
+//    testImplementation(libs.androidx.room.testing)
     testImplementation(libs.robolectric)
     testImplementation(libs.mockwebserver)
     implementation(libs.appcompat)
@@ -75,10 +84,11 @@ dependencies {
     // Js engine
     implementation(libs.rhino.android)
     implementation(libs.androidx.javascriptengine)
+    testImplementation(libs.org.jacoco.core)
 }
 
-tasks.register<JacocoReport>("jacocoTestReport") {
-    dependsOn(tasks.named("testDebugUnitTest"))
+tasks.register("jacocoTestReport", JacocoReport::class) {
+    dependsOn("testDebugUnitTest")
 
     reports {
         xml.required.set(true)
@@ -86,14 +96,55 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         csv.required.set(true)
     }
 
-    val fileFilter = listOf("**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*", "**/*Test*.*", "android/**/*.*")
-    val mainSrc = "${project.projectDir}/src/main/kotlin"
+    val fileFilter = listOf(
+        "**/R.class",
+        "**/R\$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*Test*.*",
+        "android/**/*.*",
+        "**/com/example/funcalculator/databinding/*.*"
+    )
 
-    sourceDirectories.setFrom(files(mainSrc))
-    classDirectories.setFrom(fileTree(layout.buildDirectory.dir("intermediates/javac/debug")) {
+    val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
         exclude(fileFilter)
-    })
-    executionData.setFrom(fileTree(layout.buildDirectory) {
-        include("jacoco/testDebugUnitTest.exec")
+    }
+
+    val kotlinDebugTree = fileTree("${buildDir}/tmp/kotlin-classes/debug") {
+        exclude(fileFilter)
+    }
+
+    val mainSrc = "src/main/java"
+
+    classDirectories.setFrom(files(listOf(debugTree, kotlinDebugTree)))
+    sourceDirectories.setFrom(files(mainSrc))
+    executionData.setFrom(fileTree(buildDir) {
+        include(
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec"
+        )
     })
 }
+
+tasks.register("codeCoverage") {
+    dependsOn("jacocoTestReport")
+    doLast {
+        val reportFile = file("${buildDir}/reports/jacoco/jacocoTestReport/html/index.html")
+        if (!reportFile.exists()) {
+            println("Jacoco HTML report not found at: ${reportFile.path}")
+            return@doLast
+        }
+
+        val regex = """class="ctr2">([0-9]{1,2})""".toRegex()
+        val content = reportFile.readText()
+
+        val match = regex.find(content)
+        if (match != null) {
+            val coverage = match.groups[1]?.value
+            println("TOTAL COVERAGE: $coverage%")
+        } else {
+            println("Coverage percentage not found in the HTML report.")
+        }
+    }
+}
+

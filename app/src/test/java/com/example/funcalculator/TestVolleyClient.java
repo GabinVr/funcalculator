@@ -48,7 +48,7 @@ public class TestVolleyClient {
     @Before
     public void setUp() {
         mockContext = ApplicationProvider.getApplicationContext();
-        volleyClient = new VolleyClient("evaluate", mockContext);
+        // volleyClient = new VolleyClient("evaluate", mockContext);
         testExpression = new Expression("2+2");
     }
 
