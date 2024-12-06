@@ -3,6 +3,7 @@ import javax.xml.parsers.DocumentBuilderFactory
 plugins {
     alias(libs.plugins.android.application)
     id("jacoco")
+    id("org.owasp.dependencycheck") version "11.1.1"
 }
 
 android {
@@ -57,6 +58,13 @@ android {
 }
 
 dependencies {
+    implementation(libs.jaxp.api)
+    // org.owasp.dependencycheck needs at least this version of jackson. Other plugins pull in older versions..
+    add("implementation", "com.fasterxml.jackson:jackson-bom:2.16.1")
+
+    // org.owasp.dependencycheck needs these versions. Other plugins pull in older versions..
+    add("implementation", "org.apache.commons:commons-lang3:3.14.0")
+    add("implementation", "org.apache.commons:commons-text:1.11.0")
     implementation(libs.room.runtime)
     implementation(libs.volley)
     testImplementation(libs.androidx.core)

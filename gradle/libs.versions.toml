@@ -1,6 +1,7 @@
 [versions]
 agp = "8.6.0"
 javascriptengine = "1.0.0-beta01"
+jaxpApi = "1.4.5"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -25,6 +26,7 @@ core = "1.6.1"
 [libraries]
 androidx-javascriptengine = { module = "androidx.javascriptengine:javascriptengine", version.ref = "javascriptengine" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomRuntime" }
+jaxp-api = { module = "javax.xml.parsers:jaxp-api", version.ref = "jaxpApi" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
